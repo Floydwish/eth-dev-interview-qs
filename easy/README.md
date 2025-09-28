@@ -1,305 +1,524 @@
-# 以太坊开发者面试问题 - Easy 难度
+# 🚀 以太坊开发者面试问题 - Easy 难度
 
-## 目录
+> 本目录包含 30 个以太坊开发者面试基础问题，每个问题都有详细的中文答案。适合初学者和准备面试的开发者使用。
 
-- [1. What is the difference between private, internal, public, and external functions?](#1-what-is-the-difference-between-private-internal-public-and-external-functions)
-- [2. Approximately, how large can a smart contract be?](#2-approximately-how-large-can-a-smart-contract-be)
-- [3. What is the difference between create and create2?](#3-what-is-the-difference-between-create-and-create2)
-- [4. What major change with arithmetic happened with Solidity 0.8.0?](#4-what-major-change-with-arithmetic-happened-with-solidity-080)
-- [5. What special CALL is required for proxies to work?](#5-what-special-call-is-required-for-proxies-to-work)
-- [6. How do you calculate the dollar cost of an Ethereum transaction?](#6-how-do-you-calculate-the-dollar-cost-of-an-ethereum-transaction)
-- [7. What are the challenges of creating a random number on the blockchain?](#7-what-are-the-challenges-of-creating-a-random-number-on-the-blockchain)
-- [8. What is the difference between a Dutch Auction and an English Auction?](#8-what-is-the-difference-between-a-dutch-auction-and-an-english-auction)
-- [9. What is the difference between transfer and transferFrom in ERC20?](#9-what-is-the-difference-between-transfer-and-transferfrom-in-erc20)
-- [10. Which is better to use for an address allowlist: a mapping or an array? Why?](#10-which-is-better-to-use-for-an-address-allowlist-a-mapping-or-an-array-why)
-- [11. Why shouldn't tx.origin be used for authentication?](#11-why-shouldnt-txorigin-be-used-for-authentication)
-- [12. What hash function does Ethereum primarily use?](#12-what-hash-function-does-ethereum-primarily-use)
-- [13. How much is 1 gwei of Ether?](#13-how-much-is-1-gwei-of-ether)
-- [14. How much is 1 wei of Ether?](#14-how-much-is-1-wei-of-ether)
-- [15. What is the difference between assert and require?](#15-what-is-the-difference-between-assert-and-require)
-- [16. What is a flash loan?](#16-what-is-a-flash-loan)
-- [17. What is the check-effects-interaction pattern?](#17-what-is-the-check-effects-interaction-pattern)
-- [18. What is the minimum amount of Ether required to run a solo staking node?](#18-what-is-the-minimum-amount-of-ether-required-to-run-a-solo-staking-node)
-- [19. What is the difference between fallback and receive?](#19-what-is-the-difference-between-fallback-and-receive)
-- [20. What is reentrancy?](#20-what-is-reentrancy)
-- [21. What prevents infinite loops from running forever?](#21-what-prevents-infinite-loops-from-running-forever)
-- [22. What is the difference between tx.origin and msg.sender?](#22-what-is-the-difference-between-txorigin-and-msgsender)
-- [23. How do you send Ether to a contract that does not have payable functions, or a receive or fallback?](#23-how-do-you-send-ether-to-a-contract-that-does-not-have-payable-functions-or-a-receive-or-fallback)
-- [24. What is the difference between view and pure?](#24-what-is-the-difference-between-view-and-pure)
-- [25. What is the difference between transferFrom and safeTransferFrom in ERC721?](#25-what-is-the-difference-between-transferfrom-and-safetransferfrom-in-erc721)
-- [26. How can an ERC1155 token be made into a non-fungible token?](#26-how-can-an-erc1155-token-be-made-into-a-non-fungible-token)
-- [27. What is access control and why is it important?](#27-what-is-access-control-and-why-is-it-important)
-- [28. What does a modifier do?](#28-what-does-a-modifier-do)
-- [29. What is the largest value a uint256 can store?](#29-what-is-the-largest-value-a-uint256-can-store)
-- [30. What is variable and fixed interest rate?](#30-what-is-variable-and-fixed-interest-rate)
+## 📋 目录
 
----
-
-## 1. What is the difference between private, internal, public, and external functions?
-
-**private**: 
-- 变量、函数仅当前合约内部可用
-- 不能被继承的子合约访问
-- 最严格的访问控制
-
-**internal**: 
-- 变量、函数当前合约内部可用
-- 可以被继承的子合约访问
-- 默认的访问级别（如果不指定）
-
-**public**: 
-- 变量、函数任何人都可以访问
-- 内部和外部调用都可以
-- 编译器会自动生成getter函数（对于变量）
-
-**external**: 
-- 函数只能被外部调用（通过交易或外部合约调用）
-- 内部调用需要使用this.functionName()的方式
-- 对于大数组参数更节省gas
+| # | 问题 | 状态 |
+|---|------|------|
+| 1 | [函数访问修饰符的区别](#1-函数访问修饰符的区别) | ✅ 已完成 |
+| 2 | [智能合约大小限制](#2-智能合约大小限制) | ✅ 已完成 |
+| 3 | [CREATE vs CREATE2](#3-create-vs-create2) | ✅ 已完成 |
+| 4 | [Solidity 0.8.0 算术变化](#4-solidity-080-算术变化) | ✅ 已完成 |
+| 5 | [代理合约需要的特殊调用](#5-代理合约需要的特殊调用) | ✅ 已完成 |
+| 6 | [计算交易美元成本](#6-计算交易美元成本) | ⏳ 待完善 |
+| 7 | [区块链随机数挑战](#7-区块链随机数挑战) | ⏳ 待完善 |
+| 8 | [荷兰拍卖 vs 英式拍卖](#8-荷兰拍卖-vs-英式拍卖) | ⏳ 待完善 |
+| 9 | [ERC20 transfer 区别](#9-erc20-transfer-区别) | ⏳ 待完善 |
+| 10 | [地址白名单：映射 vs 数组](#10-地址白名单映射-vs-数组) | ⏳ 待完善 |
+| 11 | [为什么不用 tx.origin 认证](#11-为什么不用-txorigin-认证) | ⏳ 待完善 |
+| 12 | [以太坊主要哈希函数](#12-以太坊主要哈希函数) | ⏳ 待完善 |
+| 13 | [1 gwei 等于多少 Ether](#13-1-gwei-等于多少-ether) | ⏳ 待完善 |
+| 14 | [1 wei 等于多少 Ether](#14-1-wei-等于多少-ether) | ⏳ 待完善 |
+| 15 | [assert vs require](#15-assert-vs-require) | ⏳ 待完善 |
+| 16 | [闪电贷是什么](#16-闪电贷是什么) | ⏳ 待完善 |
+| 17 | [检查-效果-交互模式](#17-检查-效果-交互模式) | ⏳ 待完善 |
+| 18 | [独立质押节点最小 ETH](#18-独立质押节点最小-eth) | ⏳ 待完善 |
+| 19 | [fallback vs receive](#19-fallback-vs-receive) | ⏳ 待完善 |
+| 20 | [重入攻击](#20-重入攻击) | ⏳ 待完善 |
+| 21 | [防止无限循环](#21-防止无限循环) | ⏳ 待完善 |
+| 22 | [tx.origin vs msg.sender](#22-txorigin-vs-msgsender) | ⏳ 待完善 |
+| 23 | [向无 payable 合约发送 ETH](#23-向无-payable-合约发送-eth) | ⏳ 待完善 |
+| 24 | [view vs pure](#24-view-vs-pure) | ⏳ 待完善 |
+| 25 | [ERC721 transferFrom 区别](#25-erc721-transferfrom-区别) | ⏳ 待完善 |
+| 26 | [ERC1155 转为 NFT](#26-erc1155-转为-nft) | ⏳ 待完善 |
+| 27 | [访问控制重要性](#27-访问控制重要性) | ⏳ 待完善 |
+| 28 | [modifier 作用](#28-modifier-作用) | ⏳ 待完善 |
+| 29 | [uint256 最大值](#29-uint256-最大值) | ⏳ 待完善 |
+| 30 | [可变 vs 固定利率](#30-可变-vs-固定利率) | ⏳ 待完善 |
 
 ---
 
-## 2. Approximately, how large can a smart contract be?
+## 1. 函数访问修饰符的区别
 
-**答案：24,576字节（24 KB）**
+**问题**: What is the difference between private, internal, public, and external functions?
 
-### 背景
-目前，以太坊智能合约的字节码大小被限制在24,576字节（24 KB）。这个限制是由以太坊改进提案（EIP-170）引入的，其核心原因是为了防止拒绝服务（DoS）攻击。
+### 🎯 核心答案
 
-### 为什么存在大小限制
-合约大小限制是一项旨在保护网络的安全措施，它能阻止恶意攻击，避免其滥用以太坊节点处理合约数据的方式。
+| 修饰符 | 访问范围 | 特点 |
+|--------|----------|------|
+| **private** | 仅当前合约内部 | 最严格，子合约无法访问 |
+| **internal** | 当前合约 + 子合约 | 默认访问级别 |
+| **public** | 任何人都可访问 | 内部外部都可调用，自动生成 getter |
+| **external** | 仅外部调用 | 内部调用需 `this.functionName()` |
 
-#### DoS攻击风险
-- **节点工作量不成比例**：在设定大小限制之前，攻击者可以部署一个非常大的合约。对攻击者而言，调用这个合约的成本相对较低，但却会迫使每个以太坊节点完成大量工作。这些工作包括从存储中读取大型合约代码以及执行初步处理，这对节点造成了不成比例的负担。
-- **防止网络瓶颈**：通过利用少量的Gas消耗，强迫节点执行过多的工作，大型合约可以被用来拖慢整个网络，从而构成一种有效的DoS攻击方式。
+### 📝 详细说明
 
-### EIP-170的解决方案
-2016年，在Spurious Dragon硬分叉期间，EIP-170设定了一个部署合约字节码大小的硬性上限。这确保了节点处理合约调用所需的工作量与调用者支付的Gas成本成正比，从而消除了DoS攻击的风险。
-
-### 开发者如何规避限制
-24 KB的编译字节码大小限制对于复杂的应用来说相当小。因此，开发者通常会采用以下架构模式来解决这个限制：
-
-#### 1. 模块化
-开发者不会部署一个单一的、庞大的合约，而是将逻辑拆分成多个相互关联的小型合约。一个中心化的"管理器"（Manager）或"内核"（Kernel）合约可以与这些功能各异的小型库合约进行交互。
-
-#### 2. 代理模式
-一个代理合约（Proxy contract）可以将所有函数调用转发给一个更大、不可变的"实现"合约（Implementation contract）。这种模式允许合约实现可升级，并有助于管理字节码大小，尽管它会增加架构的复杂性。
-
-#### 3. 使用库
-许多合约共用的代码可以作为库合约部署一次，然后被其他合约调用。这不仅能实现代码复用，还能保持各个合约的尺寸较小。
+- **private**: 最严格的访问控制，只能在定义它的合约内部使用
+- **internal**: 可以被继承的子合约访问，是默认的访问级别
+- **public**: 任何人都可以访问，编译器会自动为变量生成 getter 函数
+- **external**: 只能被外部调用，对于大数组参数更节省 gas
 
 ---
 
-## 3. What is the difference between create and create2?
+## 2. 智能合约大小限制
 
-**核心区别**：CREATE 和 CREATE2 的主要区别在于最终合约地址的计算方式，这决定了部署地址是否可预测。
+**问题**: Approximately, how large can a smart contract be?
 
-### CREATE
+### 🎯 核心答案
 
-#### 地址计算
-CREATE 操作码根据发送方地址和其交易 nonce 来确定新合约的地址。Nonce是一个顺序计数器，每当一个地址发送一次交易，其Nonce就会增加。
+**24,576 字节（24 KB）**
 
-**公式**：`address = keccak256(rlp([sender, nonce]))[12:]`
+### 📝 详细说明
 
-#### 特点
-- **可预测性**：直到部署的那个确切时刻，合约的地址都是不可预测的。因为如果部署者在此期间发送了其他交易，Nonce值就会发生改变
-- **使用场景**：标准的、简单的合约部署，不需要事先知道合约地址的情况
+#### 🔒 为什么有这个限制？
+- **防止 DoS 攻击**: 防止恶意合约占用过多节点资源
+- **保护网络**: 确保 gas 成本与节点工作量成正比
 
-### CREATE2
+#### 🛠️ 如何规避限制？
+1. **模块化设计**: 将逻辑拆分到多个小合约
+2. **代理模式**: 使用代理合约 + 实现合约
+3. **库合约**: 共享代码部署为库
 
-#### 地址计算
-CREATE2 操作码（在 EIP-1014 中引入）使用四个组成部分来计算地址：
-
-1. 一个常量值 (0xFF)，用于防止与 CREATE 生成的地址发生冲突
-2. 部署者的地址
-3. 一个自定义的 salt（一个任意的32字节值）
-4. 合约初始化代码的 keccak256 哈希值
-
-**公式**：`address = keccak256(0xFF ++ sender ++ salt ++ keccak256(init_code))[12:]`
-
-#### 特点
-- **可预测性**：由于地址取决于用户定义的 salt 和合约字节码，因此即使合约尚未部署，其最终地址也可以在链下计算出来
-- **使用场景**："确定性"部署，即事先知道地址的情况
-
-#### 高级应用场景
-1. **反事实实例**：在链上与一个尚不存在的合约地址进行交互。这在状态通道和第二层（Layer 2）解决方案中非常有用
-2. **可升级性**：将一个新的实现合约部署到一个可预测的地址，允许代理合约指向它，从而简化升级
-3. **跨链一致性**：在不同的、兼容EVM的链上，无论Nonce差异如何，都可以在同一地址部署相同的合约代码
+#### 🚀 未来展望
+- **EVM 对象格式 (EOF)**: 预计将限制提高到 64 KB
+- **向后兼容**: 现有合约仍保持 24 KB 限制
 
 ---
 
-## 4. What major change with arithmetic happened with Solidity 0.8.0?
+## 3. CREATE vs CREATE2
 
-**核心变化**：Solidity 0.8.0 版本中算术运算的主要变化是：所有算术操作在发生上溢或下溢时，现在都会默认回退（revert）。这是一项重大更改，显著提高了智能合约的安全性。
+**问题**: What is the difference between create and create2?
 
-### 在 Solidity 0.8.0 之前
+### 🎯 核心答案
 
-在此版本之前，无符号整数（例如 uint256）在发生上溢或下溢时，其值会"环绕"。这可能导致严重的安全漏洞，例如：
+| 特性 | CREATE | CREATE2 |
+|------|--------|---------|
+| **地址计算** | `keccak256(rlp([sender, nonce]))` | `keccak256(0xFF ++ sender ++ salt ++ keccak256(init_code))` |
+| **可预测性** | ❌ 不可预测 | ✅ 部署前可预测 |
+| **Nonce 依赖** | ✅ 是 | ❌ 否 |
+| **主要用途** | 标准部署 | 确定性部署 |
 
-- **上溢**：`uint256 max = type(uint256).max; max = max + 1;` 会导致 max 的值被重置为 0，而不是回退
-- **下溢**：`uint256 value = 0; value = value - 1;` 会导致 value 的值被设置为 `type(uint256).max`
+### 📝 详细说明
 
-为了解决这个问题，开发者通常需要使用来自 OpenZeppelin 的 SafeMath 库来执行带有检查功能的算术运算。
+#### CREATE
+- 地址基于发送者地址和 nonce 计算
+- 直到部署时刻才确定地址
+- 适合标准的合约部署
 
-### 在 Solidity 0.8.0 中
+#### CREATE2  
+- 地址基于发送者、salt 和字节码计算
+- 部署前就可以计算地址
+- 适合：代理升级、状态通道、跨链一致性
 
-通过 0.8.0 更新，编译器现在会自动为所有整数算术操作添加溢出和下溢检查。
+---
 
-- **自动检查**：如果发生上溢或下溢，交易将自动回退，并带有一个 `Panic(uint256)` 错误，从而防止意外和潜在的恶意行为
-- **简化开发**：这使得对于简单的算术运算不再需要 SafeMath 库，代码因此变得更清晰、更易读，并减少了调用外部库函数所产生的 Gas 消耗
+## 4. Solidity 0.8.0 算术变化
 
-### unchecked 代码块
+**问题**: What major change with arithmetic happened with Solidity 0.8.0?
 
-如果开发者确实需要环绕行为（例如，用于非常特定的低级逻辑），他们可以使用 `unchecked { ... }` 代码块来禁用默认的溢出和下溢检查。这提供了一种在必要时选择不使用新默认行为的方式。
+### 🎯 核心答案
 
-使用 unchecked 可以节省 Gas，因为编译器会跳过执行溢出和下溢检查的额外操作码。但是必须在确保不会发生溢出或下溢的情况下才能安全地使用它，否则可能导致严重的安全漏洞。
+**自动溢出检查**: 所有算术操作在发生上溢/下溢时会自动回退
 
-**示例**：
+### 📝 详细说明
+
+#### 🔄 变化对比
+| 版本 | 行为 | 风险 |
+|------|------|------|
+| **0.8.0 之前** | 数值环绕 | 安全漏洞 |
+| **0.8.0 之后** | 自动回退 | 更安全 |
+
+#### 💡 实际效果
+```solidity
+// 0.8.0 之前
+uint256 max = type(uint256).max;
+max = max + 1; // 结果: 0 (环绕)
+
+// 0.8.0 之后  
+uint256 max = type(uint256).max;
+max = max + 1; // 交易回退，抛出 Panic(uint256) 错误
+```
+
+#### ⚡ unchecked 块
 ```solidity
 unchecked {
-    uint256 result = a + b; // 不会进行溢出检查
+    uint256 result = a + b; // 跳过溢出检查，节省 gas
 }
 ```
 
 ---
 
-## 5. What special CALL is required for proxies to work?
+## 5. 代理合约需要的特殊调用
 
-**答案**：代理合约需要一个特殊的调用，即 **DELEGATECALL**，才能正常工作。与标准的 CALL 不同，DELEGATECALL 允许代理合约在保持自身上下文（包括存储、msg.sender和 msg.value）的情况下，执行另一个合约（称为实现合约）的代码。
+**问题**: What special CALL is required for proxies to work?
 
-### DELEGATECALL 的工作原理
+### 🎯 核心答案
 
-为了理解 DELEGATECALL，可以将它与两个合约（合约 A 为调用方，合约 B 为被调用方）之间的标准 CALL 进行比较：
+**DELEGATECALL** - 在调用者上下文中执行被调用合约的代码
 
-#### 标准 CALL
-合约 B 的代码在合约 B 的上下文中执行。这意味着：
-- 任何被修改或读取的状态变量都是合约 B 的
-- `msg.sender` 和 `msg.value` 也会更新为合约 A 的调用
+### 📝 详细说明
 
-#### DELEGATECALL
-合约 B 的代码被执行，但其上下文却是合约 A。这意味着：
-- **存储**：执行合约 B 的代码期间所做的任何状态更改都会应用于合约 A 的存储
-- **上下文变量**：`msg.sender` 和 `msg.value` 保持与触发代理的原始调用相同，而不是代理合约本身
+#### 🔄 执行上下文对比
+| 调用类型 | 执行上下文 | 存储修改 | msg.sender |
+|----------|------------|----------|------------|
+| **CALL** | 被调用合约 | 被调用合约 | 调用者 |
+| **DELEGATECALL** | 调用者合约 | 调用者合约 | 原始调用者 |
 
-### DELEGATECALL 在代理模式中的作用
-
-DELEGATECALL 是可升级代理模式的关键，允许：
-- **代理合约**（存储状态和实现合约地址）将调用转发给实现合约（包含逻辑）
-- 实现合约在代理合约的存储上执行操作
-- 通过更新代理中的引用地址，可以在不影响用户数据的情况下升级合约逻辑
-
-### 安全隐患
-
-DELEGATECALL 存在存储冲突的安全风险：
-- **存储布局不匹配**：实现合约和代理合约的存储布局不匹配可能导致代理合约数据被意外覆盖
-- **函数选择器冲突**：如果实现合约和代理合约有相同的函数选择器，可能导致意外的函数调用
-
-### 示例对比
-
-```solidity
-// 标准 CALL
-contract A calls contract B → B 的代码在 B 的上下文中执行
-
-// DELEGATECALL  
-contract A calls contract B → B 的代码在 A 的上下文中执行
+#### 🏗️ 代理模式原理
+```
+用户 → 代理合约 → DELEGATECALL → 实现合约
+     ↑                              ↓
+     └──────── 在代理合约上下文中执行 ←┘
 ```
 
----
-
-## 6. How do you calculate the dollar cost of an Ethereum transaction?
-
----
-
-## 7. What are the challenges of creating a random number on the blockchain?
+#### ⚠️ 安全隐患
+- **存储冲突**: 实现合约和代理合约存储布局不匹配
+- **函数选择器冲突**: 相同函数选择器可能导致意外调用
 
 ---
 
-## 8. What is the difference between a Dutch Auction and an English Auction?
+## 6. 计算交易美元成本
+
+**问题**: How do you calculate the dollar cost of an Ethereum transaction?
+
+### 🎯 核心答案
+
+**交易成本 = Gas Used × Gas Price × ETH/USD 汇率**
+
+### 📝 详细说明
+
+#### 📊 计算公式
+```
+美元成本 = 使用的 Gas × Gas Price (gwei) × ETH 价格 (USD)
+```
+
+#### 💡 示例计算
+- Gas Used: 21,000
+- Gas Price: 20 gwei  
+- ETH 价格: $2,000
+- 成本 = 21,000 × 20 × 10⁻⁹ × $2,000 = $0.84
 
 ---
 
-## 9. What is the difference between transfer and transferFrom in ERC20?
+## 7. 区块链随机数挑战
+
+**问题**: What are the challenges of creating a random number on the blockchain?
+
+### 🎯 核心答案
+
+**区块链是确定性的，无法产生真正的随机数**
+
+### 📝 详细说明
+
+#### ❌ 常见错误方法
+- `block.timestamp`: 矿工可以操纵
+- `block.difficulty`: 矿工可以操纵  
+- `blockhash`: 可预测
+
+#### ✅ 推荐解决方案
+1. **Chainlink VRF**: 可验证随机函数
+2. **Commit-Reveal**: 提交-揭示方案
+3. **Oracle 服务**: 外部随机数源
 
 ---
 
-## 10. Which is better to use for an address allowlist: a mapping or an array? Why?
+## 8. 荷兰拍卖 vs 英式拍卖
+
+**问题**: What is the difference between a Dutch Auction and an English Auction?
+
+### 🎯 核心答案
+
+| 拍卖类型 | 价格变化 | 参与者行为 |
+|----------|----------|------------|
+| **荷兰拍卖** | 从高到低递减 | 第一个接受者获胜 |
+| **英式拍卖** | 从低到高递增 | 最高出价者获胜 |
 
 ---
 
-## 11. Why shouldn't tx.origin be used for authentication?
+## 9. ERC20 transfer 区别
+
+**问题**: What is the difference between transfer and transferFrom in ERC20?
+
+### 🎯 核心答案
+
+| 函数 | 调用者 | 用途 |
+|------|--------|------|
+| **transfer** | 代币持有者 | 直接转账自己的代币 |
+| **transferFrom** | 授权第三方 | 转移他人授权的代币 |
 
 ---
 
-## 12. What hash function does Ethereum primarily use?
+## 10. 地址白名单：映射 vs 数组
+
+**问题**: Which is better to use for an address allowlist: a mapping or an array? Why?
+
+### 🎯 核心答案
+
+**推荐使用 mapping**，因为查找效率更高
+
+### 📝 详细说明
+
+| 数据结构 | 查找复杂度 | Gas 消耗 | 适用场景 |
+|----------|------------|----------|----------|
+| **mapping** | O(1) | 低 | 频繁查找 |
+| **array** | O(n) | 高 | 需要遍历 |
 
 ---
 
-## 13. How much is 1 gwei of Ether?
+## 11. 为什么不用 tx.origin 认证
+
+**问题**: Why shouldn't tx.origin be used for authentication?
+
+### 🎯 核心答案
+
+**tx.origin 容易被钓鱼攻击利用**
+
+### 📝 详细说明
+
+#### ⚠️ 攻击场景
+```
+用户 → 恶意合约 → 受害者合约
+     ↑ tx.origin = 用户地址
+     └── 绕过权限检查
+```
+
+#### ✅ 正确做法
+使用 `msg.sender` 进行认证
 
 ---
 
-## 14. How much is 1 wei of Ether?
+## 12. 以太坊主要哈希函数
+
+**问题**: What hash function does Ethereum primarily use?
+
+### 🎯 核心答案
+
+**Keccak-256** (SHA-3 的变体)
 
 ---
 
-## 15. What is the difference between assert and require?
+## 13. 1 gwei 等于多少 Ether
+
+**问题**: How much is 1 gwei of Ether?
+
+### 🎯 核心答案
+
+**1 gwei = 10⁻⁹ ETH = 0.000000001 ETH**
 
 ---
 
-## 16. What is a flash loan?
+## 14. 1 wei 等于多少 Ether
+
+**问题**: How much is 1 wei of Ether?
+
+### 🎯 核心答案
+
+**1 wei = 10⁻¹⁸ ETH = 0.000000000000000001 ETH**
 
 ---
 
-## 17. What is the check-effects-interaction pattern?
+## 15. assert vs require
+
+**问题**: What is the difference between assert and require?
+
+### 🎯 核心答案
+
+| 函数 | 用途 | Gas 消耗 | 错误类型 |
+|------|------|----------|----------|
+| **assert** | 检查内部错误 | 消耗所有 gas | Panic |
+| **require** | 检查输入条件 | 退还剩余 gas | Error |
 
 ---
 
-## 18. What is the minimum amount of Ether required to run a solo staking node?
+## 16. 闪电贷是什么
+
+**问题**: What is a flash loan?
+
+### 🎯 核心答案
+
+**无抵押的即时借贷，同一交易内必须偿还**
 
 ---
 
-## 19. What is the difference between fallback and receive?
+## 17. 检查-效果-交互模式
+
+**问题**: What is the check-effects-interaction pattern?
+
+### 🎯 核心答案
+
+**防止重入攻击的安全编程模式**
+
+### 📝 执行顺序
+1. **检查**: 验证条件
+2. **效果**: 更新状态  
+3. **交互**: 调用外部合约
 
 ---
 
-## 20. What is reentrancy?
+## 18. 独立质押节点最小 ETH
+
+**问题**: What is the minimum amount of Ether required to run a solo staking node?
+
+### 🎯 核心答案
+
+**32 ETH** (信标链验证者最低要求)
 
 ---
 
-## 21. What prevents infinite loops from running forever?
+## 19. fallback vs receive
+
+**问题**: What is the difference between fallback and receive?
+
+### 🎯 核心答案
+
+| 函数 | 触发条件 | 用途 |
+|------|----------|------|
+| **receive** | 纯 ETH 转账 | 接收 ETH |
+| **fallback** | 无匹配函数调用 | 处理其他情况 |
 
 ---
 
-## 22. What is the difference between tx.origin and msg.sender?
+## 20. 重入攻击
+
+**问题**: What is reentrancy?
+
+### 🎯 核心答案
+
+**外部合约在状态更新前被重复调用，可能导致状态不一致**
 
 ---
 
-## 23. How do you send Ether to a contract that does not have payable functions, or a receive or fallback?
+## 21. 防止无限循环
+
+**问题**: What prevents infinite loops from running forever?
+
+### 🎯 核心答案
+
+**Gas 限制** - 每个区块和交易都有 gas 上限
 
 ---
 
-## 24. What is the difference between view and pure?
+## 22. tx.origin vs msg.sender
+
+**问题**: What is the difference between tx.origin and msg.sender?
+
+### 🎯 核心答案
+
+| 变量 | 含义 | 示例 |
+|------|------|------|
+| **tx.origin** | 交易发起者 | 用户钱包地址 |
+| **msg.sender** | 直接调用者 | 可能是合约地址 |
 
 ---
 
-## 25. What is the difference between transferFrom and safeTransferFrom in ERC721?
+## 23. 向无 payable 合约发送 ETH
+
+**问题**: How do you send Ether to a contract that does not have payable functions, or a receive or fallback?
+
+### 🎯 核心答案
+
+**无法直接发送** - 交易会失败
+
+### 📝 解决方案
+1. 合约添加 payable 函数
+2. 添加 receive() 或 fallback() 函数
 
 ---
 
-## 26. How can an ERC1155 token be made into a non-fungible token?
+## 24. view vs pure
+
+**问题**: What is the difference between view and pure?
+
+### 🎯 核心答案
+
+| 修饰符 | 可访问性 | 用途 |
+|--------|----------|------|
+| **view** | 可读取状态 | 不修改状态的函数 |
+| **pure** | 不可访问状态 | 纯计算函数 |
 
 ---
 
-## 27. What is access control and why is it important?
+## 25. ERC721 transferFrom 区别
+
+**问题**: What is the difference between transferFrom and safeTransferFrom in ERC721?
+
+### 🎯 核心答案
+
+| 函数 | 安全检查 | 推荐使用 |
+|------|----------|----------|
+| **transferFrom** | 无 | ❌ |
+| **safeTransferFrom** | 有 | ✅ |
 
 ---
 
-## 28. What does a modifier do?
+## 26. ERC1155 转为 NFT
+
+**问题**: How can an ERC1155 token be made into a non-fungible token?
+
+### 🎯 核心答案
+
+**每个 token ID 只铸造一个代币**
 
 ---
 
-## 29. What is the largest value a uint256 can store?
+## 27. 访问控制重要性
+
+**问题**: What is access control and why is it important?
+
+### 🎯 核心答案
+
+**限制函数调用权限，防止未授权操作**
 
 ---
 
-## 30. What is variable and fixed interest rate?
+## 28. modifier 作用
+
+**问题**: What does a modifier do?
+
+### 🎯 核心答案
+
+**在函数执行前后添加条件检查或逻辑**
+
+---
+
+## 29. uint256 最大值
+
+**问题**: What is the largest value a uint256 can store?
+
+### 🎯 核心答案
+
+**2²⁵⁶ - 1 = 115,792,089,237,316,195,423,570,985,008,687,907,853,269,984,665,640,564,039,457,584,007,913,129,639,935**
+
+---
+
+## 30. 可变 vs 固定利率
+
+**问题**: What is variable and fixed interest rate?
+
+### 🎯 核心答案
+
+| 利率类型 | 特点 | 适用场景 |
+|----------|------|----------|
+| **固定利率** | 利率不变 | 稳定收益 |
+| **可变利率** | 根据市场调整 | 灵活借贷 |
+
+---
+
+## 📚 相关资源
+
+- [Solidity 官方文档](https://docs.soliditylang.org/)
+- [OpenZeppelin 合约库](https://openzeppelin.com/contracts/)
+- [以太坊开发者资源](https://ethereum.org/developers/)
+
+## 🤝 贡献
+
+欢迎提交 Issue 和 Pull Request 来改进这些问题和答案！
+
+---
+
+<div align="center">
+
+**⭐ 如果这个仓库对你有帮助，请给个 Star！**
+
+</div>
