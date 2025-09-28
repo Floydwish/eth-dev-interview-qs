@@ -1,5 +1,40 @@
 # 以太坊开发者面试问题 - Easy 难度
 
+## 目录
+
+- [1. What is the difference between private, internal, public, and external functions?](#1-what-is-the-difference-between-private-internal-public-and-external-functions)
+- [2. Approximately, how large can a smart contract be?](#2-approximately-how-large-can-a-smart-contract-be)
+- [3. What is the difference between create and create2?](#3-what-is-the-difference-between-create-and-create2)
+- [4. What major change with arithmetic happened with Solidity 0.8.0?](#4-what-major-change-with-arithmetic-happened-with-solidity-080)
+- [5. What special CALL is required for proxies to work?](#5-what-special-call-is-required-for-proxies-to-work)
+- [6. How do you calculate the dollar cost of an Ethereum transaction?](#6-how-do-you-calculate-the-dollar-cost-of-an-ethereum-transaction)
+- [7. What are the challenges of creating a random number on the blockchain?](#7-what-are-the-challenges-of-creating-a-random-number-on-the-blockchain)
+- [8. What is the difference between a Dutch Auction and an English Auction?](#8-what-is-the-difference-between-a-dutch-auction-and-an-english-auction)
+- [9. What is the difference between transfer and transferFrom in ERC20?](#9-what-is-the-difference-between-transfer-and-transferfrom-in-erc20)
+- [10. Which is better to use for an address allowlist: a mapping or an array? Why?](#10-which-is-better-to-use-for-an-address-allowlist-a-mapping-or-an-array-why)
+- [11. Why shouldn't tx.origin be used for authentication?](#11-why-shouldnt-txorigin-be-used-for-authentication)
+- [12. What hash function does Ethereum primarily use?](#12-what-hash-function-does-ethereum-primarily-use)
+- [13. How much is 1 gwei of Ether?](#13-how-much-is-1-gwei-of-ether)
+- [14. How much is 1 wei of Ether?](#14-how-much-is-1-wei-of-ether)
+- [15. What is the difference between assert and require?](#15-what-is-the-difference-between-assert-and-require)
+- [16. What is a flash loan?](#16-what-is-a-flash-loan)
+- [17. What is the check-effects-interaction pattern?](#17-what-is-the-check-effects-interaction-pattern)
+- [18. What is the minimum amount of Ether required to run a solo staking node?](#18-what-is-the-minimum-amount-of-ether-required-to-run-a-solo-staking-node)
+- [19. What is the difference between fallback and receive?](#19-what-is-the-difference-between-fallback-and-receive)
+- [20. What is reentrancy?](#20-what-is-reentrancy)
+- [21. What prevents infinite loops from running forever?](#21-what-prevents-infinite-loops-from-running-forever)
+- [22. What is the difference between tx.origin and msg.sender?](#22-what-is-the-difference-between-txorigin-and-msgsender)
+- [23. How do you send Ether to a contract that does not have payable functions, or a receive or fallback?](#23-how-do-you-send-ether-to-a-contract-that-does-not-have-payable-functions-or-a-receive-or-fallback)
+- [24. What is the difference between view and pure?](#24-what-is-the-difference-between-view-and-pure)
+- [25. What is the difference between transferFrom and safeTransferFrom in ERC721?](#25-what-is-the-difference-between-transferfrom-and-safetransferfrom-in-erc721)
+- [26. How can an ERC1155 token be made into a non-fungible token?](#26-how-can-an-erc1155-token-be-made-into-a-non-fungible-token)
+- [27. What is access control and why is it important?](#27-what-is-access-control-and-why-is-it-important)
+- [28. What does a modifier do?](#28-what-does-a-modifier-do)
+- [29. What is the largest value a uint256 can store?](#29-what-is-the-largest-value-a-uint256-can-store)
+- [30. What is variable and fixed interest rate?](#30-what-is-variable-and-fixed-interest-rate)
+
+---
+
 ## 1. What is the difference between private, internal, public, and external functions?
 
 **private**: 
@@ -21,6 +56,8 @@
 - 函数只能被外部调用（通过交易或外部合约调用）
 - 内部调用需要使用this.functionName()的方式
 - 对于大数组参数更节省gas
+
+---
 
 ## 2. Approximately, how large can a smart contract be?
 
@@ -50,6 +87,8 @@
 
 #### 3. 使用库
 许多合约共用的代码可以作为库合约部署一次，然后被其他合约调用。这不仅能实现代码复用，还能保持各个合约的尺寸较小。
+
+---
 
 ## 3. What is the difference between create and create2?
 
@@ -87,6 +126,7 @@ CREATE2 操作码（在 EIP-1014 中引入）使用四个组成部分来计算�
 2. **可升级性**：将一个新的实现合约部署到一个可预测的地址，允许代理合约指向它，从而简化升级
 3. **跨链一致性**：在不同的、兼容EVM的链上，无论Nonce差异如何，都可以在同一地址部署相同的合约代码
 
+---
 
 ## 4. What major change with arithmetic happened with Solidity 0.8.0?
 
@@ -120,6 +160,8 @@ unchecked {
     uint256 result = a + b; // 不会进行溢出检查
 }
 ```
+
+---
 
 ## 5. What special CALL is required for proxies to work?
 
@@ -162,52 +204,102 @@ contract A calls contract B → B 的代码在 B 的上下文中执行
 contract A calls contract B → B 的代码在 A 的上下文中执行
 ```
 
+---
+
 ## 6. How do you calculate the dollar cost of an Ethereum transaction?
+
+---
 
 ## 7. What are the challenges of creating a random number on the blockchain?
 
+---
+
 ## 8. What is the difference between a Dutch Auction and an English Auction?
+
+---
 
 ## 9. What is the difference between transfer and transferFrom in ERC20?
 
+---
+
 ## 10. Which is better to use for an address allowlist: a mapping or an array? Why?
+
+---
 
 ## 11. Why shouldn't tx.origin be used for authentication?
 
+---
+
 ## 12. What hash function does Ethereum primarily use?
+
+---
 
 ## 13. How much is 1 gwei of Ether?
 
+---
+
 ## 14. How much is 1 wei of Ether?
+
+---
 
 ## 15. What is the difference between assert and require?
 
+---
+
 ## 16. What is a flash loan?
+
+---
 
 ## 17. What is the check-effects-interaction pattern?
 
+---
+
 ## 18. What is the minimum amount of Ether required to run a solo staking node?
+
+---
 
 ## 19. What is the difference between fallback and receive?
 
+---
+
 ## 20. What is reentrancy?
+
+---
 
 ## 21. What prevents infinite loops from running forever?
 
+---
+
 ## 22. What is the difference between tx.origin and msg.sender?
+
+---
 
 ## 23. How do you send Ether to a contract that does not have payable functions, or a receive or fallback?
 
+---
+
 ## 24. What is the difference between view and pure?
+
+---
 
 ## 25. What is the difference between transferFrom and safeTransferFrom in ERC721?
 
+---
+
 ## 26. How can an ERC1155 token be made into a non-fungible token?
+
+---
 
 ## 27. What is access control and why is it important?
 
+---
+
 ## 28. What does a modifier do?
 
+---
+
 ## 29. What is the largest value a uint256 can store?
+
+---
 
 ## 30. What is variable and fixed interest rate?
