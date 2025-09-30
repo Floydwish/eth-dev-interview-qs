@@ -247,12 +247,6 @@ unchecked {
 requestRandomWords(keyHash, subscriptionId, requestConfirmations, callbackGasLimit, numWords);
 ```
 
-**特点**:
-- ✅ 可验证的随机性
-- ✅ 防操纵性强
-- ✅ 易于集成
-- ❌ 需要支付 LINK 代币
-
 ##### 2. Commit-Reveal 方案
 ```solidity
 // 第一阶段：提交哈希
@@ -262,23 +256,11 @@ function commit(bytes32 hash) external;
 function reveal(uint256 randomNumber, uint256 nonce) external;
 ```
 
-**特点**:
-- ✅ 完全去中心化
-- ✅ 多方参与
-- ❌ 需要两次交易
-- ❌ 实现复杂
-
 ##### 3. Oracle 服务
 ```solidity
 // 从外部预言机获取随机数
 function requestRandomness() external;
 ```
-
-**特点**:
-- ✅ 实现简单
-- ✅ 延迟低
-- ❌ 中心化信任
-- ❌ 安全性较低
 
 #### 📊 方案对比
 
