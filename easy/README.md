@@ -296,6 +296,10 @@ function requestRandomness() external;
 | **应用场景** | 艺术品、房地产、慈善拍卖、eBay | 鲜花拍卖、政府债券、ICO/IDO |
 | **优势** | 透明度高，获得最高价格 | 速度快，适合易腐商品 |
 
+#### 📝 专业术语解释
+- **ICO (Initial Coin Offering)**: 首次代币发行，区块链项目通过发行代币进行融资
+- **IDO (Initial DEX Offering)**: 首次去中心化交易所发行，在DEX上进行的代币发行
+
 ---
 
 ## 9. ERC20 transfer 区别
@@ -336,6 +340,9 @@ function requestRandomness() external;
 | **最佳用途** | 白名单检查 | 小型固定数据集 |
 | **代码示例** | `return allowlist[user];` | `for (uint i = 0; i < allowlist.length; i++)` |
 | **主要问题** | 无法迭代所有地址 | Gas 限制，成本递增，反模式 |
+
+#### 📝 专业术语解释
+- **反模式 (Anti-pattern)**: 看似解决问题但实际导致更大问题的常见设计方式，在区块链开发中应避免
 
 ---
 
