@@ -16,11 +16,11 @@
 | 8 | [荷兰拍卖 vs 英式拍卖](#8-荷兰拍卖-vs-英式拍卖) | ✅ 已完成 |
 | 9 | [ERC20 transfer 区别](#9-erc20-transfer-区别) | ✅ 已完成 |
 | 10 | [地址白名单：映射 vs 数组](#10-地址白名单映射-vs-数组) | ✅ 已完成 |
-| 11 | [为什么不用 tx.origin 认证](#11-为什么不用-txorigin-认证) | ⏳ 待完善 |
-| 12 | [以太坊主要哈希函数](#12-以太坊主要哈希函数) | ⏳ 待完善 |
-| 13 | [1 gwei 等于多少 Ether](#13-1-gwei-等于多少-ether) | ⏳ 待完善 |
-| 14 | [1 wei 等于多少 Ether](#14-1-wei-等于多少-ether) | ⏳ 待完善 |
-| 15 | [assert vs require](#15-assert-vs-require) | ⏳ 待完善 |
+| 11 | [为什么不用 tx.origin 认证](#11-为什么不用-txorigin-认证) | ✅ 已完成 |
+| 12 | [以太坊主要哈希函数](#12-以太坊主要哈希函数) | ✅ 已完成 |
+| 13 | [1 gwei 等于多少 Ether](#13-1-gwei-等于多少-ether) | ✅ 已完成 |
+| 14 | [1 wei 等于多少 Ether](#14-1-wei-等于多少-ether) | ✅ 已完成 |
+| 15 | [assert vs require](#15-assert-vs-require) | ✅ 已完成 |
 | 16 | [闪电贷是什么](#16-闪电贷是什么) | ⏳ 待完善 |
 | 17 | [检查-效果-交互模式](#17-检查-效果-交互模式) | ⏳ 待完善 |
 | 18 | [独立质押节点最小 ETH](#18-独立质押节点最小-eth) | ⏳ 待完善 |
@@ -423,7 +423,7 @@ function requestRandomness() external;
 | **require** | 检查外部条件 | 退还剩余 gas | Error |
 
 
-### Panic 与 Error 对比
+### 📊 Panic 与 Error 对比
 
 | 方面 | Panic | Error |
 |------|-------|-------|
