@@ -167,7 +167,8 @@ Advanced
 37. What does codesize() return if called within the constructor? What about outside the constructor?
 
 
-other:
+upchain 面试题:
+利用 AI：和ai对话，ai当你的面试官？
 
 1. sol文件的编译过程，调用过程，sol文件是如何存到链上？
 2. EVM和JVM的区别？
@@ -203,4 +204,82 @@ other:
 32. 一个函数报了stack too deep的问题，请你思考在不拆分函数以及不开启优化器的方式下去解决这个问题？
 33. 让你设计一个类似于pumpfun的平台，你应该如何设计？
 34. 面试前最好准备下背调的东西-流水/离职证明/项目？
-35. 和ai对话，ai当你的面试官？
+35. ERC-20 transfer 的内联汇编实现？
+mapping(address => uint256) public balances;
+
+function transfer(address to, uint256 amount) external returns (bool success) {
+    assembly {
+        // --- 1. 计算 msg.sender 的 balances 存储槽位置 (Slot) ---
+
+        // 'caller()' 是 Yul 中对应 EVM Opcode CALLER 的函数，返回当前交易的发起者地址 (msg.sender)。
+        // MSTORE(0x00, value) 将 value 存储到内存的 0x00 位置（即内存 [0x00, 0x20]）。
+        // 这一步是将 msg.sender（20 字节，左侧补零）放入内存作为哈希计算的 Key。
+        mstore(0x00, caller()) 
+
+        // 'balances.slot' 是 Solidity 编译器自动生成的占位符，代表 balances 这个 mapping 变量
+        // 在合约状态存储中的顺序存储槽编号 p。
+        // MSTORE(0x20, value) 将 balances 的槽编号 p 存储到内存的 0x20 位置（即内存 [0x20, 0x40]）。
+        // 此时，内存 [0x00, 0x40] 存储的是：[msg.sender (32 字节) | p (32 字节)]。
+        mstore(0x20, balances.slot) 
+
+        // KECCAK256(offset, size) 计算内存中指定区域的 Keccak-256 哈希。
+        // 根据 mapping 的存储规则：slot = keccak256(key | p)。
+        // 这里的 key 是 msg.sender，p 是 balances.slot。
+        // 0x00 是起始偏移量，0x40 (64 字节) 是长度。
+        // 计算结果 senderSlot 就是 msg.sender 余额的实际存储位置。
+        let senderSlot := keccak256(0x00, 0x40) 
+
+        // --- 2. 加载 msg.sender 的余额 ---
+
+        // SLOAD(slot) 从指定的存储槽读取 32 字节数据，对应 EVM Opcode SLOAD。
+        // 将 senderSlot 中的值（即 msg.sender 的余额）加载到变量 senderBalance。
+        let senderBalance := sload(senderSlot) 
+
+        // --- 3. 检查余额是否足够 ---
+
+        // LT(a, b) 是 'less than'，检查 a 是否小于 b。对应 EVM Opcode LT。
+        // 检查 senderBalance 是否小于 amount。
+        if lt(senderBalance, amount) { 
+            // 如果余额不足，则准备 Revert 错误信息。
+            // 将字符串 "NotEnoughBalance"（UTF-8 编码，20 字节）写入内存 0x00 位置。
+            // 由于字符串小于 32 字节，内存中会是左侧补零（或右对齐，取决于编译器行为，但在 Revert 场景中不影响）。
+            mstore(0x00, "NotEnoughBalance") 
+            
+            // REVERT(offset, size) 终止执行并回滚状态更改，同时将内存 [offset, offset + size] 的数据作为错误信息返回。
+            // 0x00 是内存起始地址，0x20 (32 字节) 是返回的错误信息长度。
+            revert(0x00, 0x20) 
+        }
+
+        // --- 4. 计算 to 的 balances 存储槽位置 ---
+
+        // 将接收者地址 to 写入内存 0x00 位置，覆盖之前的 msg.sender。
+        mstore(0x00, to) 
+        
+        // 再次将 balances 的槽编号 p 写入内存 0x20 位置（与步骤 1 相同）。
+        mstore(0x20, balances.slot) 
+        
+        // 计算接收者地址 to 的实际存储槽位置。
+        let toSlot := keccak256(0x00, 0x40) 
+
+        // --- 5. 更新 balances ---
+
+        // SSTORE(slot, value) 将 value 写入指定的存储槽，对应 EVM Opcode SSTORE。
+        // SUB(a, b) 计算 a 减去 b。更新 msg.sender 的余额：senderBalance - amount。
+        sstore(senderSlot, sub(senderBalance, amount)) 
+        
+        // ADD(a, b) 计算 a 加上 b。
+        // SLOAD(toSlot) 读取接收者当前的余额。
+        // 将接收者的新余额 (旧余额 + amount) 写入 toSlot。
+        sstore(toSlot, add(sload(toSlot), amount)) 
+
+        // --- 6. 返回 true ---
+
+        // 将布尔值 true (在 EVM 中表示为 1) 写入内存 0x00 位置。
+        mstore(0x00, 1) 
+        
+        // RETURN(offset, size) 结束函数执行并返回内存中的数据。
+        // 0x00 是内存起始地址，0x20 (32 字节) 是返回数据长度。 
+        // 函数返回结果 success = true。
+        return(0x00, 0x20) 
+    }
+}
